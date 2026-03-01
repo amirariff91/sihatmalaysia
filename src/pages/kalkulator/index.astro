@@ -1,0 +1,472 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+
+<Base
+  title="Kalkulator Kesihatan — BMI, Kalori & Tekanan Darah | Sihat Malaysia"
+  description="Kalkulator kesihatan percuma: Kira BMI anda, keperluan kalori harian dan periksa kategori tekanan darah. Percuma, privat dan mudah digunakan."
+>
+  <!-- Header -->
+  <section class="bg-gradient-to-br from-primary to-primary-dark text-white py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <h1 class="text-3xl sm:text-4xl font-bold mb-3">🧮 Kalkulator Kesihatan</h1>
+      <p class="text-white/80 text-lg max-w-2xl">
+        Alat pengiraan kesihatan percuma. Semua pengiraan dilakukan di peranti anda — tiada data dihantar ke mana-mana.
+      </p>
+    </div>
+  </section>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-10">
+
+    <!-- BMI Calculator -->
+    <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div class="bg-gradient-to-r from-green-600 to-primary px-6 py-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          ⚖️ Kalkulator BMI (Indeks Jisim Badan)
+        </h2>
+        <p class="text-white/80 text-sm mt-1">Kira berat badan ideal anda berdasarkan tinggi dan berat</p>
+      </div>
+      <div class="p-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Berat Badan (kg)</label>
+            <input
+              type="number"
+              id="bmi-weight"
+              min="20" max="300"
+              placeholder="Contoh: 70"
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-lg"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Tinggi Badan (cm)</label>
+            <input
+              type="number"
+              id="bmi-height"
+              min="100" max="250"
+              placeholder="Contoh: 165"
+              class="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-lg"
+            />
+          </div>
+        </div>
+        <button
+          id="bmi-calculate"
+          class="w-full sm:w-auto bg-primary hover:bg-primary-dark text-white font-bold px-8 py-3 rounded-xl transition-colors text-lg"
+        >
+          Kira BMI Saya
+        </button>
+
+        <div id="bmi-result" class="hidden mt-6">
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="text-5xl font-bold" id="bmi-value"></div>
+              <div>
+                <div id="bmi-category" class="text-lg font-bold"></div>
+                <div id="bmi-desc" class="text-sm text-gray-500"></div>
+              </div>
+            </div>
+
+            <!-- BMI Scale -->
+            <div class="mb-4">
+              <div class="flex rounded-full overflow-hidden h-4 mb-1">
+                <div class="flex-1 bg-blue-300" title="Kurang berat"></div>
+                <div class="flex-1 bg-green-400" title="Normal"></div>
+                <div class="flex-1 bg-yellow-400" title="Lebih berat"></div>
+                <div class="flex-1 bg-orange-400" title="Obes I"></div>
+                <div class="flex-1 bg-red-500" title="Obes II"></div>
+              </div>
+              <div class="flex justify-between text-xs text-gray-400">
+                <span>&lt;18.5</span>
+                <span>23</span>
+                <span>27.5</span>
+                <span>35</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+              <div class="bg-blue-50 rounded-lg p-3">
+                <p class="text-blue-600 font-semibold">Kurang Berat</p>
+                <p class="text-gray-600">BMI &lt; 18.5</p>
+              </div>
+              <div class="bg-green-50 rounded-lg p-3">
+                <p class="text-green-600 font-semibold">Normal ✓</p>
+                <p class="text-gray-600">BMI 18.5 – 22.9</p>
+              </div>
+              <div class="bg-yellow-50 rounded-lg p-3">
+                <p class="text-yellow-600 font-semibold">Lebih Berat</p>
+                <p class="text-gray-600">BMI 23 – 27.4</p>
+              </div>
+              <div class="bg-orange-50 rounded-lg p-3">
+                <p class="text-orange-600 font-semibold">Obes I</p>
+                <p class="text-gray-600">BMI 27.5 – 34.9</p>
+              </div>
+              <div class="bg-red-50 rounded-lg p-3">
+                <p class="text-red-600 font-semibold">Obes II</p>
+                <p class="text-gray-600">BMI ≥ 35</p>
+              </div>
+            </div>
+
+            <p class="text-xs text-gray-400 mt-3">* Berdasarkan nilai rujukan Asian/WHO. Untuk penilaian kesihatan lengkap, sila berjumpa doktor.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Daily Calorie Calculator -->
+    <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div class="bg-gradient-to-r from-orange-500 to-amber-500 px-6 py-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          🔥 Kalkulator Kalori Harian
+        </h2>
+        <p class="text-white/80 text-sm mt-1">Kira keperluan kalori harian anda berdasarkan tahap aktiviti</p>
+      </div>
+      <div class="p-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Jantina</label>
+            <select id="cal-gender" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent">
+              <option value="male">Lelaki</option>
+              <option value="female">Perempuan</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Umur (tahun)</label>
+            <input type="number" id="cal-age" min="15" max="100" placeholder="Contoh: 35" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-400" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Berat Badan (kg)</label>
+            <input type="number" id="cal-weight" min="30" max="300" placeholder="Contoh: 70" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-400" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Tinggi Badan (cm)</label>
+            <input type="number" id="cal-height" min="100" max="250" placeholder="Contoh: 165" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-400" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Tahap Aktiviti</label>
+            <select id="cal-activity" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-400">
+              <option value="1.2">Sedentari — duduk sepanjang hari, tiada senaman</option>
+              <option value="1.375">Sedikit aktif — senaman 1-3 hari/minggu</option>
+              <option value="1.55" selected>Sederhana aktif — senaman 3-5 hari/minggu</option>
+              <option value="1.725">Aktif — senaman berat 6-7 hari/minggu</option>
+              <option value="1.9">Sangat aktif — kerja fizikal berat atau senaman 2x sehari</option>
+            </select>
+          </div>
+        </div>
+        <button id="cal-calculate" class="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3 rounded-xl transition-colors text-lg">
+          Kira Kalori Saya
+        </button>
+
+        <div id="cal-result" class="hidden mt-6">
+          <div class="bg-orange-50 rounded-xl p-5 border border-orange-100">
+            <h3 class="font-bold text-gray-900 mb-4">Keperluan Kalori Harian Anda:</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="bg-white rounded-xl p-4 border border-orange-100 text-center">
+                <p class="text-3xl font-bold text-orange-500" id="cal-lose"></p>
+                <p class="text-sm text-gray-600 mt-1">Turun Berat Badan</p>
+                <p class="text-xs text-gray-400">(-500 kcal/hari)</p>
+              </div>
+              <div class="bg-white rounded-xl p-4 border border-green-200 text-center ring-2 ring-green-400">
+                <p class="text-3xl font-bold text-green-600" id="cal-maintain"></p>
+                <p class="text-sm text-gray-600 mt-1">Kekal Berat ✓</p>
+                <p class="text-xs text-gray-400">Kalori penyelenggaraan</p>
+              </div>
+              <div class="bg-white rounded-xl p-4 border border-blue-100 text-center">
+                <p class="text-3xl font-bold text-blue-500" id="cal-gain"></p>
+                <p class="text-sm text-gray-600 mt-1">Naik Berat Badan</p>
+                <p class="text-xs text-gray-400">(+500 kcal/hari)</p>
+              </div>
+            </div>
+            <div class="mt-4 bg-white rounded-xl p-4 border border-orange-100">
+              <h4 class="font-semibold text-gray-800 mb-2 text-sm">Cadangan Agihan Makro:</h4>
+              <div class="grid grid-cols-3 gap-3 text-center">
+                <div>
+                  <p class="text-2xl font-bold text-blue-500" id="macro-protein"></p>
+                  <p class="text-xs text-gray-500">Protein (g)</p>
+                </div>
+                <div>
+                  <p class="text-2xl font-bold text-yellow-500" id="macro-carb"></p>
+                  <p class="text-xs text-gray-500">Karbohidrat (g)</p>
+                </div>
+                <div>
+                  <p class="text-2xl font-bold text-red-400" id="macro-fat"></p>
+                  <p class="text-xs text-gray-500">Lemak (g)</p>
+                </div>
+              </div>
+            </div>
+            <p class="text-xs text-gray-400 mt-3">* Dikira menggunakan formula Mifflin-St Jeor. Hanya anggaran — keperluan individu berbeza-beza.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blood Pressure Checker -->
+    <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div class="bg-gradient-to-r from-red-500 to-pink-500 px-6 py-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          💓 Pemeriksa Kategori Tekanan Darah
+        </h2>
+        <p class="text-white/80 text-sm mt-1">Masukkan bacaan tekanan darah anda untuk mengetahui kategorinya</p>
+      </div>
+      <div class="p-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Sistolik (angka atas, mmHg)</label>
+            <input type="number" id="bp-systolic" min="60" max="250" placeholder="Contoh: 120" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-400 text-lg" />
+            <p class="text-xs text-gray-400 mt-1">Tekanan semasa jantung berdegup</p>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Diastolik (angka bawah, mmHg)</label>
+            <input type="number" id="bp-diastolic" min="40" max="150" placeholder="Contoh: 80" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-400 text-lg" />
+            <p class="text-xs text-gray-400 mt-1">Tekanan semasa jantung berehat</p>
+          </div>
+        </div>
+        <button id="bp-check" class="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white font-bold px-8 py-3 rounded-xl transition-colors text-lg">
+          Periksa Tekanan Darah
+        </button>
+
+        <div id="bp-result" class="hidden mt-6">
+          <div id="bp-result-box" class="rounded-xl p-5 border">
+            <div class="flex items-center gap-4 mb-4">
+              <div id="bp-icon" class="text-4xl"></div>
+              <div>
+                <h3 id="bp-category" class="text-xl font-bold"></h3>
+                <p id="bp-reading" class="text-gray-500 text-sm"></p>
+              </div>
+            </div>
+            <p id="bp-advice" class="text-gray-700 text-sm leading-relaxed"></p>
+          </div>
+          
+          <!-- BP Reference Table -->
+          <div class="mt-4 overflow-x-auto">
+            <table class="w-full text-sm border border-gray-100 rounded-xl overflow-hidden">
+              <thead>
+                <tr class="bg-gray-50">
+                  <th class="px-4 py-2 text-left font-semibold text-gray-700">Kategori</th>
+                  <th class="px-4 py-2 text-left font-semibold text-gray-700">Sistolik</th>
+                  <th class="px-4 py-2 text-left font-semibold text-gray-700">Diastolik</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-t border-gray-50">
+                  <td class="px-4 py-2 text-green-600 font-medium">Normal ✓</td>
+                  <td class="px-4 py-2 text-gray-600">&lt; 120</td>
+                  <td class="px-4 py-2 text-gray-600">&lt; 80</td>
+                </tr>
+                <tr class="border-t border-gray-50 bg-yellow-50">
+                  <td class="px-4 py-2 text-yellow-600 font-medium">Tinggi Normal</td>
+                  <td class="px-4 py-2 text-gray-600">120 – 129</td>
+                  <td class="px-4 py-2 text-gray-600">&lt; 80</td>
+                </tr>
+                <tr class="border-t border-gray-50 bg-orange-50">
+                  <td class="px-4 py-2 text-orange-600 font-medium">Hipertensi Gred 1</td>
+                  <td class="px-4 py-2 text-gray-600">130 – 139</td>
+                  <td class="px-4 py-2 text-gray-600">80 – 89</td>
+                </tr>
+                <tr class="border-t border-gray-50 bg-red-50">
+                  <td class="px-4 py-2 text-red-600 font-medium">Hipertensi Gred 2</td>
+                  <td class="px-4 py-2 text-gray-600">≥ 140</td>
+                  <td class="px-4 py-2 text-gray-600">≥ 90</td>
+                </tr>
+                <tr class="border-t border-gray-50 bg-red-100">
+                  <td class="px-4 py-2 text-red-700 font-bold">Krisis Hipertensi 🚨</td>
+                  <td class="px-4 py-2 text-gray-600">&gt; 180</td>
+                  <td class="px-4 py-2 text-gray-600">&gt; 120</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-xs text-gray-400 mt-3">⚕️ Ini adalah panduan am sahaja. Sila dapatkan nasihat doktor untuk penilaian lengkap dan rawatan.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Disclaimer -->
+    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex gap-3">
+      <span class="text-xl flex-shrink-0">⚕️</span>
+      <div>
+        <p class="font-semibold text-amber-800 mb-1">Penafian Perubatan</p>
+        <p class="text-sm text-amber-700">Kalkulator ini adalah untuk tujuan maklumat dan pendidikan sahaja. Ia bukan pengganti nasihat, diagnosis atau rawatan perubatan profesional. Sila dapatkan nasihat doktor atau profesional kesihatan yang berkelayakan untuk sebarang keputusan kesihatan anda.</p>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<script>
+  // BMI Calculator
+  document.getElementById('bmi-calculate')?.addEventListener('click', () => {
+    const weight = parseFloat((document.getElementById('bmi-weight') as HTMLInputElement).value);
+    const height = parseFloat((document.getElementById('bmi-height') as HTMLInputElement).value);
+
+    if (!weight || !height || weight < 20 || height < 100) {
+      alert('Sila masukkan berat dan tinggi yang sah.');
+      return;
+    }
+
+    const heightM = height / 100;
+    const bmi = weight / (heightM * heightM);
+    const bmiRounded = Math.round(bmi * 10) / 10;
+
+    let category = '';
+    let desc = '';
+    let color = '';
+
+    if (bmi < 18.5) {
+      category = 'Kurang Berat (Underweight)';
+      desc = 'Berat badan anda kurang dari normal. Pertimbangkan untuk meningkatkan pengambilan kalori.';
+      color = 'text-blue-600';
+    } else if (bmi < 23) {
+      category = 'Berat Badan Normal ✓';
+      desc = 'Tahniah! Berat badan anda dalam julat normal yang sihat.';
+      color = 'text-green-600';
+    } else if (bmi < 27.5) {
+      category = 'Lebih Berat (Overweight)';
+      desc = 'Berat badan anda sedikit melebihi normal. Pertimbangkan perubahan diet dan senaman.';
+      color = 'text-yellow-600';
+    } else if (bmi < 35) {
+      category = 'Obes Gred I';
+      desc = 'Berat badan anda dalam julat obes. Dapatkan nasihat doktor untuk rancangan pengurusan berat badan.';
+      color = 'text-orange-600';
+    } else {
+      category = 'Obes Gred II (Obes Teruk)';
+      desc = 'Sila berjumpa doktor dengan segera untuk penilaian dan pelan rawatan yang sesuai.';
+      color = 'text-red-600';
+    }
+
+    const resultEl = document.getElementById('bmi-result');
+    const valueEl = document.getElementById('bmi-value');
+    const categoryEl = document.getElementById('bmi-category');
+    const descEl = document.getElementById('bmi-desc');
+
+    if (resultEl && valueEl && categoryEl && descEl) {
+      valueEl.textContent = bmiRounded.toString();
+      valueEl.className = `text-5xl font-bold ${color}`;
+      categoryEl.textContent = category;
+      categoryEl.className = `text-lg font-bold ${color}`;
+      descEl.textContent = desc;
+      resultEl.classList.remove('hidden');
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  });
+
+  // Calorie Calculator
+  document.getElementById('cal-calculate')?.addEventListener('click', () => {
+    const gender = (document.getElementById('cal-gender') as HTMLSelectElement).value;
+    const age = parseFloat((document.getElementById('cal-age') as HTMLInputElement).value);
+    const weight = parseFloat((document.getElementById('cal-weight') as HTMLInputElement).value);
+    const height = parseFloat((document.getElementById('cal-height') as HTMLInputElement).value);
+    const activity = parseFloat((document.getElementById('cal-activity') as HTMLSelectElement).value);
+
+    if (!age || !weight || !height) {
+      alert('Sila lengkapkan semua maklumat.');
+      return;
+    }
+
+    // Mifflin-St Jeor BMR
+    let bmr: number;
+    if (gender === 'male') {
+      bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+    } else {
+      bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+    }
+
+    const tdee = Math.round(bmr * activity);
+    const lose = tdee - 500;
+    const gain = tdee + 500;
+
+    // Macros (30% protein, 40% carb, 30% fat)
+    const protein = Math.round((tdee * 0.30) / 4);
+    const carb = Math.round((tdee * 0.40) / 4);
+    const fat = Math.round((tdee * 0.30) / 9);
+
+    const setEl = (id: string, val: string) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+
+    setEl('cal-lose', lose.toLocaleString() + ' kcal');
+    setEl('cal-maintain', tdee.toLocaleString() + ' kcal');
+    setEl('cal-gain', gain.toLocaleString() + ' kcal');
+    setEl('macro-protein', protein.toString());
+    setEl('macro-carb', carb.toString());
+    setEl('macro-fat', fat.toString());
+
+    const resultEl = document.getElementById('cal-result');
+    if (resultEl) {
+      resultEl.classList.remove('hidden');
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  });
+
+  // Blood Pressure Checker
+  document.getElementById('bp-check')?.addEventListener('click', () => {
+    const systolic = parseInt((document.getElementById('bp-systolic') as HTMLInputElement).value);
+    const diastolic = parseInt((document.getElementById('bp-diastolic') as HTMLInputElement).value);
+
+    if (!systolic || !diastolic || systolic < 60 || diastolic < 40) {
+      alert('Sila masukkan bacaan tekanan darah yang sah.');
+      return;
+    }
+
+    let category = '';
+    let icon = '';
+    let advice = '';
+    let boxClass = '';
+
+    if (systolic > 180 || diastolic > 120) {
+      category = 'Krisis Hipertensi 🚨';
+      icon = '🚨';
+      advice = 'PERHATIAN: Tekanan darah anda sangat tinggi dan berbahaya. Dapatkan rawatan perubatan segera atau pergi ke hospital terdekat. Hubungi 999 jika perlu.';
+      boxClass = 'bg-red-100 border-red-300';
+    } else if (systolic >= 140 || diastolic >= 90) {
+      category = 'Hipertensi Gred 2 (Tinggi)';
+      icon = '🔴';
+      advice = 'Tekanan darah anda tinggi. Sila berjumpa doktor dengan segera. Anda mungkin memerlukan ubat dan perubahan gaya hidup — kurangkan garam, senaman, berhenti merokok.';
+      boxClass = 'bg-red-50 border-red-200';
+    } else if (systolic >= 130 || diastolic >= 80) {
+      category = 'Hipertensi Gred 1';
+      icon = '🟠';
+      advice = 'Tekanan darah anda dalam julat hipertensi gred 1. Sila berjumpa doktor. Perubahan gaya hidup penting: kurangkan garam dan gula, banyak bersenam, pantau tekanan darah secara berkala.';
+      boxClass = 'bg-orange-50 border-orange-200';
+    } else if (systolic >= 120 && diastolic < 80) {
+      category = 'Tinggi Normal (Elevated)';
+      icon = '🟡';
+      advice = 'Tekanan darah anda sedikit tinggi dari normal. Ambil langkah pencegahan: kurangkan garam, senaman teratur, elak tekanan berlebihan. Pantau secara berkala.';
+      boxClass = 'bg-yellow-50 border-yellow-200';
+    } else {
+      category = 'Normal ✓';
+      icon = '✅';
+      advice = 'Tekanan darah anda dalam julat normal yang sihat! Teruskan gaya hidup sihat anda — bersenam, diet seimbang, dan tidur yang cukup.';
+      boxClass = 'bg-green-50 border-green-200';
+    }
+
+    const resultEl = document.getElementById('bp-result');
+    const boxEl = document.getElementById('bp-result-box');
+    const setEl = (id: string, val: string) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+
+    if (boxEl) boxEl.className = `rounded-xl p-5 border ${boxClass}`;
+    setEl('bp-icon', icon);
+    setEl('bp-category', category);
+    setEl('bp-reading', `Bacaan anda: ${systolic}/${diastolic} mmHg`);
+    setEl('bp-advice', advice);
+
+    if (resultEl) {
+      resultEl.classList.remove('hidden');
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  });
+
+  // Allow Enter key to trigger calculations
+  document.querySelectorAll('input[type="number"]').forEach(input => {
+    input.addEventListener('keypress', (e: Event) => {
+      const keyEvent = e as KeyboardEvent;
+      if (keyEvent.key === 'Enter') {
+        const section = (e.target as Element)?.closest('section');
+        const btn = section?.querySelector('button');
+        if (btn) (btn as HTMLButtonElement).click();
+      }
+    });
+  });
+</script>

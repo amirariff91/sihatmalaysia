@@ -1,0 +1,198 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+
+<Base
+  title="Tentang Kami — Sihat Malaysia"
+  description="Tentang Sihat Malaysia — portal kesihatan dan gaya hidup untuk rakyat Malaysia. Misi kami, visi kami dan penafian perubatan."
+>
+  <!-- Header -->
+  <section class="bg-gradient-to-br from-primary to-primary-dark text-white py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <h1 class="text-3xl sm:text-4xl font-bold mb-3">Tentang Sihat Malaysia</h1>
+      <p class="text-white/80 text-lg">
+        Misi kami: Menyediakan maklumat kesihatan yang tepat, mudah difahami dan relevan untuk rakyat Malaysia.
+      </p>
+    </div>
+  </section>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-10">
+    <!-- Mission -->
+    <section class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8">
+      <div class="flex items-start gap-4">
+        <span class="text-4xl">🇲🇾</span>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 mb-3">Misi Kami</h2>
+          <p class="text-gray-600 leading-relaxed mb-4">
+            Sihat Malaysia ditubuhkan dengan satu matlamat: memastikan setiap rakyat Malaysia mempunyai akses kepada maklumat kesihatan yang tepat, boleh dipercayai dan mudah difahami — dalam bahasa sendiri.
+          </p>
+          <p class="text-gray-600 leading-relaxed">
+            Malaysia menghadapi pelbagai cabaran kesihatan awam — kadar diabetes antara tertinggi di Asia Tenggara, epidemi obesiti yang semakin serius, dan kadar kesedaran tentang kesihatan mental yang masih rendah. Kami wujud untuk membantu.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- What We Do -->
+    <section class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Apa yang Kami Sediakan</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {[
+          {
+            icon: '📝',
+            title: 'Artikel Kesihatan',
+            desc: 'Artikel komprehensif tentang pelbagai topik kesihatan — dari diabetes hingga kesihatan mental — ditulis dalam Bahasa Malaysia yang mudah difahami.'
+          },
+          {
+            icon: '🧮',
+            title: 'Kalkulator Kesihatan',
+            desc: 'Alat pengiraan percuma: BMI, keperluan kalori harian, kategori tekanan darah dan lebih banyak lagi. Semuanya berjalan di peranti anda — tiada data disimpan.'
+          },
+          {
+            icon: '🔬',
+            title: 'Maklumat Berasas Bukti',
+            desc: 'Semua maklumat kami bersandarkan kajian perubatan semasa, garis panduan Kementerian Kesihatan Malaysia (KKM) dan Pertubuhan Kesihatan Sedunia (WHO).'
+          },
+          {
+            icon: '🌐',
+            title: 'Dwibahasa',
+            desc: 'Artikel kami dalam Bahasa Malaysia dengan tajuk Inggeris — supaya boleh difahami dan dikongsi oleh semua lapisan masyarakat Malaysia.'
+          },
+        ].map(item => (
+          <div class="flex gap-4 p-4 bg-gray-50 rounded-xl">
+            <span class="text-3xl flex-shrink-0">{item.icon}</span>
+            <div>
+              <h3 class="font-bold text-gray-900 mb-1">{item.title}</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="bg-gradient-to-br from-primary to-primary-dark rounded-2xl p-6 sm:p-8 text-white">
+      <h2 class="text-2xl font-bold mb-6">Malaysia dalam Angka</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-5">
+        {[
+          { stat: '18.6%', label: 'Dewasa Malaysia menghidap Diabetes' },
+          { stat: '30.5%', label: 'Dewasa Malaysia dengan Hipertensi' },
+          { stat: '50.1%', label: 'Dewasa Malaysia kelebihan berat badan' },
+          { stat: '1 dalam 5', label: 'Orang Malaysia ada masalah kesihatan mental' },
+        ].map(item => (
+          <div class="bg-white/10 rounded-xl p-4 border border-white/20 text-center">
+            <p class="text-2xl font-bold text-green-300 mb-1">{item.stat}</p>
+            <p class="text-xs text-white/70 leading-tight">{item.label}</p>
+          </div>
+        ))}
+      </div>
+      <p class="text-white/50 text-xs mt-4">Sumber: Kajian Kesihatan dan Morbiditi Kebangsaan (NHMS) 2023, Institut Kesihatan Umum Malaysia</p>
+    </section>
+
+    <!-- Our Principles -->
+    <section class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Prinsip Kami</h2>
+      <div class="space-y-4">
+        {[
+          {
+            num: '01',
+            title: 'Ketepatan Maklumat',
+            desc: 'Kami tidak menerbitkan maklumat yang tidak disokong oleh bukti saintifik. Semua klaim mempunyai sumber yang boleh disemak.'
+          },
+          {
+            num: '02',
+            title: 'Konteks Malaysia',
+            desc: 'Maklumat kesihatan generik tidak sentiasa sesuai untuk Malaysia. Kami ambil kira sistem penjagaan kesihatan, makanan, budaya dan iklim tempatan.'
+          },
+          {
+            num: '03',
+            title: 'Bahasa Mudah',
+            desc: 'Jargon perubatan boleh mengelirukan. Kami tulis dalam bahasa yang mudah difahami oleh semua peringkat pendidikan.'
+          },
+          {
+            num: '04',
+            title: 'Tidak Menggantikan Doktor',
+            desc: 'Kami adalah sumber maklumat, bukan pengganti profesional perubatan. Kami sentiasa menggalakkan pembaca mendapatkan nasihat doktor.'
+          },
+        ].map(item => (
+          <div class="flex gap-4 p-4 border border-gray-100 rounded-xl">
+            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary font-bold text-sm flex-shrink-0">
+              {item.num}
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-900 mb-1">{item.title}</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Medical Disclaimer -->
+    <section id="penafian" class="bg-amber-50 border border-amber-200 rounded-2xl p-6 sm:p-8">
+      <div class="flex items-start gap-3">
+        <span class="text-3xl">⚕️</span>
+        <div>
+          <h2 class="text-xl font-bold text-amber-900 mb-3">Penafian Perubatan (Medical Disclaimer)</h2>
+          <div class="space-y-3 text-sm text-amber-800 leading-relaxed">
+            <p>
+              Maklumat yang terdapat di laman web sihatmalaysia.my adalah <strong>untuk tujuan pendidikan dan maklumat umum sahaja</strong>. Ia tidak boleh dianggap sebagai nasihat, diagnosis atau rawatan perubatan profesional.
+            </p>
+            <p>
+              Kandungan di laman web ini ditulis oleh editor bukan doktor perubatan dan dirujuk kepada sumber awam termasuk garis panduan KKM dan WHO. Setiap individu mempunyai keadaan kesihatan yang berbeza.
+            </p>
+            <p>
+              <strong>Sila sentiasa dapatkan nasihat daripada doktor atau profesional kesihatan yang berkelayakan</strong> sebelum membuat sebarang keputusan berkaitan kesihatan, memulakan rawatan, mengubah dos ubat atau menghentikan rawatan sedia ada.
+            </p>
+            <p>
+              Dalam kes kecemasan kesihatan, sila hubungi <strong>999</strong> atau pergi ke hospital terdekat dengan segera.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Hubungi Kami</h2>
+      <p class="text-gray-600 mb-4">
+        Ada soalan, cadangan atau ingin melaporkan maklumat yang tidak tepat? Kami akan berbesar hati untuk mendengar daripada anda.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a
+          href="mailto:info@sihatmalaysia.my"
+          class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-primary-dark transition-colors"
+        >
+          📧 info@sihatmalaysia.my
+        </a>
+      </div>
+    </section>
+
+    <!-- Sumber -->
+    <section class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Sumber & Rujukan Utama</h2>
+      <ul class="space-y-2">
+        {[
+          { name: 'Kementerian Kesihatan Malaysia (KKM)', url: 'https://www.moh.gov.my' },
+          { name: 'Institut Kesihatan Umum (IKU/NHMS)', url: 'https://iku.gov.my' },
+          { name: 'World Health Organization (WHO)', url: 'https://www.who.int' },
+          { name: 'Pertubuhan Kesihatan Sedunia — Wilayah Pasifik Barat', url: 'https://www.who.int/westernpacific' },
+          { name: 'Malaysian Endocrine & Metabolic Society (MEMS)', url: 'https://mems.org.my' },
+          { name: 'National Heart Association Malaysia', url: 'https://www.malaysianheart.org' },
+        ].map(src => (
+          <li>
+            <a
+              href={src.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-2 text-sm text-gray-600 hover:text-primary transition-colors"
+            >
+              <span class="text-primary">↗</span>
+              {src.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
+</Base>

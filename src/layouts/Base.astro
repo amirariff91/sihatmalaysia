@@ -1,0 +1,147 @@
+---
+import "../styles/global.css";
+
+export interface Props {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  ogType?: string;
+}
+
+const {
+  title,
+  description,
+  canonicalUrl = Astro.url.href,
+  ogType = "website",
+} = Astro.props;
+
+const siteUrl = "https://sihatmalaysia.my";
+const siteName = "Sihat Malaysia";
+---
+
+<!doctype html>
+<html lang="ms">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:locale" content="ms_MY" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: siteName,
+      url: siteUrl,
+      description: "Portal kesihatan dan gaya hidup sihat untuk rakyat Malaysia.",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${siteUrl}/artikel/?q={search_term_string}`,
+        "query-input": "required name=search_term_string"
+      }
+    })} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body class="bg-gray-50 font-sans text-gray-900 antialiased">
+    <!-- Navigation -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+      <nav class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-2.5 group">
+          <div class="w-9 h-9 bg-primary rounded-xl flex items-center justify-center text-white text-lg font-bold">
+            ❤
+          </div>
+          <div>
+            <span class="text-xl font-bold text-primary group-hover:text-primary-dark transition-colors">Sihat Malaysia</span>
+            <span class="hidden sm:block text-xs text-gray-500 leading-none">Portal Kesihatan & Gaya Hidup</span>
+          </div>
+        </a>
+
+        <div class="flex items-center gap-1">
+          <a href="/artikel/" class="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors">
+            Artikel
+          </a>
+          <a href="/kalkulator/" class="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors">
+            Kalkulator
+          </a>
+          <a href="/tentang-kami/" class="hidden sm:block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors">
+            Tentang Kami
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 mt-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold">❤</div>
+              <span class="text-white font-bold text-lg">Sihat Malaysia</span>
+            </div>
+            <p class="text-sm text-gray-400 leading-relaxed">
+              Portal kesihatan dan gaya hidup untuk rakyat Malaysia. Maklumat berasas bukti saintifik dalam Bahasa Malaysia dan Inggeris.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wider">Artikel</h3>
+            <ul class="space-y-2">
+              <li><a href="/artikel/" class="text-sm text-gray-400 hover:text-green-400 transition-colors">Semua Artikel</a></li>
+              <li><a href="/artikel/diabetes-malaysia-panduan-lengkap/" class="text-sm text-gray-400 hover:text-green-400 transition-colors">Diabetes Malaysia</a></li>
+              <li><a href="/artikel/tekanan-darah-tinggi-hipertensi/" class="text-sm text-gray-400 hover:text-green-400 transition-colors">Hipertensi</a></li>
+              <li><a href="/artikel/kesihatan-mental-malaysia/" class="text-sm text-gray-400 hover:text-green-400 transition-colors">Kesihatan Mental</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wider">Alat Kesihatan</h3>
+            <ul class="space-y-2">
+              <li><a href="/kalkulator/" class="text-sm text-gray-400 hover:text-green-400 transition-colors">Kalkulator BMI</a></li>
+              <li><a href="/kalkulator/" class="text-sm text-gray-400 hover:text-green-400 transition-colors">Kalkulator Kalori</a></li>
+              <li><a href="/kalkulator/" class="text-sm text-gray-400 hover:text-green-400 transition-colors">Pemeriksa Tekanan Darah</a></li>
+              <li><a href="/tentang-kami/" class="text-sm text-gray-400 hover:text-green-400 transition-colors">Tentang Kami</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-700 pt-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <p class="text-xs text-gray-500">
+            © 2025 sihatmalaysia.my |
+            <a href="/artikel/" class="hover:text-green-400 transition-colors">Artikel</a> |
+            <a href="/kalkulator/" class="hover:text-green-400 transition-colors">Kalkulator</a> |
+            <a href="/tentang-kami/" class="hover:text-green-400 transition-colors">Tentang Kami</a>
+          </p>
+          <p class="text-xs text-gray-600 max-w-md text-right">
+            Maklumat di sini adalah untuk tujuan pendidikan sahaja. Sila dapatkan nasihat doktor atau profesional kesihatan yang berkelayakan untuk diagnosis dan rawatan.
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

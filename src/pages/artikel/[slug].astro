@@ -1,0 +1,266 @@
+---
+import Base from "../../layouts/Base.astro";
+import { articles } from "../../data/articles";
+
+export function getStaticPaths() {
+  return articles.map(article => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+
+// Parse markdown-like content to HTML
+function parseContent(content: string): string {
+  return content
+    // Headers
+    .replace(/^### (.+)$/gm, '<h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">$1</h2>')
+    // Bold
+    .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>')
+    // Tables
+    .replace(/\|(.+)\|\n\|[-| ]+\|\n((?:\|.+\|\n?)+)/g, (match: string, header: string, rows: string) => {
+      const headers = header.split('|').filter((h: string) => h.trim()).map((h: string) => `<th class="px-4 py-2 bg-gray-100 text-left text-sm font-semibold text-gray-700">${h.trim()}</th>`).join('');
+      const rowsHtml = rows.trim().split('\n').map((row: string) => {
+        const cells = row.split('|').filter((c: string) => c.trim()).map((c: string) => `<td class="px-4 py-2 text-sm text-gray-600 border-t border-gray-100">${c.trim()}</td>`).join('');
+        return `<tr>${cells}</tr>`;
+      }).join('');
+      return `<div class="overflow-x-auto my-5"><table class="w-full border border-gray-200 rounded-lg overflow-hidden"><thead><tr>${headers}</tr></thead><tbody>${rowsHtml}</tbody></table></div>`;
+    })
+    // Blockquotes
+    .replace(/^> (.+)$/gm, '<blockquote class="border-l-4 border-primary bg-green-50 px-4 py-3 my-4 rounded-r-lg text-sm text-gray-700">$1</blockquote>')
+    // Code blocks
+    .replace(/```[\s\S]*?```/g, (match: string) => {
+      const code = match.replace(/```\w*\n?/, '').replace(/```$/, '').trim();
+      return `<pre class="bg-gray-900 text-green-400 rounded-xl p-4 my-4 text-sm overflow-x-auto"><code>${code}</code></pre>`;
+    })
+    // Inline code
+    .replace(/`(.+?)`/g, '<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono text-primary">$1</code>')
+    // Unordered lists
+    .replace(/^((?:- .+\n?)+)/gm, (match: string) => {
+      const items = match.trim().split('\n').map((item: string) => `<li class="flex gap-2"><span class="text-primary mt-1 flex-shrink-0">•</span><span>${item.replace(/^- /, '')}</span></li>`).join('');
+      return `<ul class="space-y-1.5 my-4 text-gray-700">${items}</ul>`;
+    })
+    // Ordered numbered items with bold
+    .replace(/^\*\*(\d+\. .+?)\*\*$/gm, '<p class="font-bold text-gray-900 mt-5 mb-2">$1</p>')
+    // Links
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="text-primary hover:underline" target="_blank" rel="noopener">$1</a>')
+    // Emojis + text lines that start with emoji
+    .replace(/^((?:✅|❌|⚠️|🆘|🔴|💉|✅|🌅|🍶|📱|🥤|🫖|🥗|💪|😴|🌡️|🚽|🦴|📦|🧠|💊|😵|💓|🚿|💧|😴|👁️|🦶|🔪|⚖️|⚕️|☀️|👟|🌡|⬇️|❤️|🫀|✅|❌).+)$/gm, '<p class="flex gap-2 my-1.5"><span>$1</span></p>')
+    // Paragraphs
+    .replace(/^(?!<[a-z]).+$/gm, (line: string) => {
+      if (line.trim() === '') return '';
+      if (line.startsWith('<')) return line;
+      return `<p class="text-gray-700 leading-relaxed my-3">${line}</p>`;
+    })
+    // Clean up extra blank lines
+    .replace(/\n\n+/g, '\n');
+}
+
+const relatedArticles = articles
+  .filter(a => a.slug !== article.slug && a.category === article.category)
+  .slice(0, 3);
+
+const siteUrl = 'https://sihatmalaysia.my';
+const articleUrl = `${siteUrl}/artikel/${article.slug}/`;
+---
+
+<Base
+  title={`${article.title} — Sihat Malaysia`}
+  description={article.description}
+  canonicalUrl={articleUrl}
+  ogType="article"
+>
+  <!-- Breadcrumb -->
+  <nav class="bg-white border-b border-gray-100">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-2 text-sm text-gray-500">
+      <a href="/" class="hover:text-primary">Laman Utama</a>
+      <span>›</span>
+      <a href="/artikel/" class="hover:text-primary">Artikel</a>
+      <span>›</span>
+      <span class="text-gray-700 truncate max-w-xs">{article.title}</span>
+    </div>
+  </nav>
+
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+    <!-- Article Header -->
+    <header class="mb-8">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-xs px-3 py-1 rounded-full bg-green-100 text-green-700 font-medium">
+          {article.categoryLabel}
+        </span>
+        <span class="text-xs text-gray-400">•</span>
+        <span class="text-xs text-gray-400">⏱ {article.readTime}</span>
+        <span class="text-xs text-gray-400">•</span>
+        <span class="text-xs text-gray-400">
+          {new Date(article.date).toLocaleDateString('ms-MY', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </span>
+      </div>
+
+      <div class="flex items-start gap-4">
+        <span class="text-5xl flex-shrink-0">{article.image}</span>
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight mb-2">
+            {article.title}
+          </h1>
+          <p class="text-sm text-gray-500 italic">{article.titleEn}</p>
+        </div>
+      </div>
+
+      <p class="mt-5 text-lg text-gray-600 leading-relaxed border-l-4 border-primary pl-4 bg-green-50 py-3 rounded-r-xl">
+        {article.description}
+      </p>
+    </header>
+
+    <!-- Disclaimer -->
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8 flex gap-3">
+      <span class="text-xl flex-shrink-0">⚕️</span>
+      <p class="text-sm text-amber-800">
+        <strong>Penafian Perubatan:</strong> Artikel ini adalah untuk tujuan pendidikan sahaja dan bukan nasihat perubatan. Sila dapatkan nasihat doktor atau profesional kesihatan yang berkelayakan untuk diagnosis, rawatan atau sebarang soalan kesihatan anda.
+      </p>
+    </div>
+
+    <!-- Article Content -->
+    <div class="prose-custom">
+      <Fragment set:html={parseContent(article.content)} />
+    </div>
+
+    <!-- Share / Actions -->
+    <div class="mt-10 pt-6 border-t border-gray-100 flex flex-wrap gap-3 items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-gray-700 mb-2">Kongsi artikel ini:</p>
+        <div class="flex gap-2">
+          <a
+            href={`https://api.whatsapp.com/send?text=${encodeURIComponent(article.title + ' - ' + articleUrl)}`}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-1.5 px-4 py-2 bg-green-500 text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-colors"
+          >
+            WhatsApp
+          </a>
+          <a
+            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(articleUrl)}`}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+          >
+            Facebook
+          </a>
+        </div>
+      </div>
+      <a
+        href="/kalkulator/"
+        class="inline-flex items-center gap-2 bg-primary text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-primary-dark transition-colors text-sm"
+      >
+        🧮 Cuba Kalkulator Kesihatan
+      </a>
+    </div>
+  </article>
+
+  <!-- Related Articles -->
+  {relatedArticles.length > 0 && (
+    <section class="bg-white border-t border-gray-100 py-10">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-5">Artikel Berkaitan</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {relatedArticles.map(rel => (
+            <a
+              href={`/artikel/${rel.slug}/`}
+              class="group bg-gray-50 rounded-xl p-4 border border-gray-100 hover:border-primary hover:bg-white transition-all"
+            >
+              <span class="text-2xl">{rel.image}</span>
+              <h3 class="font-semibold text-sm text-gray-800 group-hover:text-primary mt-2 mb-1 leading-snug">{rel.title}</h3>
+              <p class="text-xs text-gray-500">⏱ {rel.readTime}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Back to Articles -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6">
+    <a href="/artikel/" class="inline-flex items-center gap-2 text-primary font-semibold hover:text-primary-dark transition-colors">
+      ← Kembali ke Senarai Artikel
+    </a>
+  </div>
+</Base>
+
+<style>
+  .prose-custom :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  .prose-custom :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose-custom :global(p) {
+    color: #374151;
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .prose-custom :global(ul) {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1rem;
+  }
+  .prose-custom :global(blockquote) {
+    border-left: 4px solid #0D7C66;
+    background: #f0fdf4;
+    padding: 0.75rem 1rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    margin: 1.25rem 0;
+    font-size: 0.9rem;
+    color: #374151;
+  }
+  .prose-custom :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.875rem;
+  }
+  .prose-custom :global(th) {
+    background: #f3f4f6;
+    padding: 0.5rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  .prose-custom :global(td) {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #f3f4f6;
+    color: #4b5563;
+  }
+  .prose-custom :global(strong) {
+    font-weight: 600;
+    color: #111827;
+  }
+  .prose-custom :global(a) {
+    color: #0D7C66;
+    text-decoration: underline;
+  }
+  .prose-custom :global(code) {
+    background: #f3f4f6;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-family: monospace;
+    font-size: 0.875rem;
+  }
+  .prose-custom :global(pre) {
+    background: #111827;
+    color: #86efac;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    overflow-x: auto;
+    margin: 1.25rem 0;
+  }
+</style>
